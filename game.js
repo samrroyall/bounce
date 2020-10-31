@@ -1,6 +1,9 @@
 // GLOBAL VARIABLES AND GETTER/SETTER FUNCTIONS //
 
 const root = document.documentElement; 
+// game area variables
+let gameHeight = 0;
+let gameWidth = 0;
 // basket variables
 let basketHeight = 0;
 let basketWidth = 0;
@@ -14,6 +17,7 @@ let ballPos = {
     left: 0,
     right: 0
 }
+let stepDist = 0;
 // scoreboard variables
 let wins = 0;
 let losses = 0;
@@ -33,6 +37,7 @@ function setBallPos() {
     ballSize = ballCoords.width;
     ballPos.left = ballCoords.left;
     ballPos.right = ballCoords.right;
+    stepDist = 0.05*ballSize;
 }
 
 // BASKET-BALL RELATIVE POSITION FUNCTIONS //
@@ -143,7 +148,7 @@ function moveBall(dir) {
         if (ballPos.left >= screenCoords.left + 2) {
             root.style.setProperty(
                 "--ball-pos", 
-                (currVal - 10).toString() + "px"
+                (currVal - stepDist).toString() + "px"
             );
         } else {
             root.style.setProperty(
@@ -152,10 +157,10 @@ function moveBall(dir) {
             );
         }
     } else if (dir === 1) {
-        if (ballPos.right <= screenCoords.right - 15) {
+        if (ballPos.right <= screenCoords.right - (stepDist + 5)) {
             root.style.setProperty(
                 "--ball-pos", 
-                (currVal + 10).toString() + "px"
+                (currVal + stepDist).toString() + "px"
             );
         } else {
             root.style.setProperty(
@@ -186,20 +191,29 @@ function setScoreboard() {
     lossesSection.innerHTML = lossText;
 }
 
+function setPositions() {
+    // set game board dimensions 
+    let gameCoords = document.getElementById("game").getBoundingClientRect();
+    gameHeight = gameCoords.height;
+    gameWidth = gameCoords.width;
+    // set basket position
+    root.style.setProperty("--basket-width", (0.2*gameWidth).toString() + "px");
+    root.style.setProperty("--basket-height", (0.12*gameWidth).toString() + "px");
+    root.style.setProperty("--basket-pos", (0.65*gameWidth).toString() + "px");
+    setBasketPos();
+    // set ball position
+    root.style.setProperty("--ball-size", (0.17*gameWidth).toString() + "px");
+    root.style.setProperty("--ball-pos", (0.15*gameWidth).toString() + "px");
+    setBallPos();
+}
+
 function start() {
     // set scoreboard
     setScoreboard();
+    // set ball and basket positions 
+    setPositions();
     // start ball animations
     startBall();
-    // set basket position
-    root.style.setProperty("--basket-height", "120px");
-    root.style.setProperty("--basket-width", "240px");
-    root.style.setProperty("--basket-pos", "700px");
-    setBasketPos();
-    // set ball position
-    root.style.setProperty("--ball-size", "200px");
-    root.style.setProperty("--ball-pos", "150px");
-    setBallPos();
     // start ball position listener
     window.requestAnimationFrame(checkPosChange);
 
@@ -216,3 +230,4 @@ function start() {
 };
 
 window.onload = start;
+window.onresize = setPositions;

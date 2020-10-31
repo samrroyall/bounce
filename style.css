@@ -64,7 +64,7 @@ body {
     /* position */
     position: absolute;
     left: var(--basket-pos);
-    bottom: 12.5%;
+    bottom: calc(10% + 5px);
     z-index: 4;
 }
 #basket-shadow {
@@ -77,7 +77,7 @@ body {
     /* position */
     position: absolute;
     left: var(--basket-pos);
-    bottom: 11.5%;
+    bottom: 10%;
     z-index: 3;
    
 }
@@ -92,7 +92,7 @@ body {
     width: var(--ball-size);
     /* position */
     position: absolute;
-    bottom: 35%;
+    bottom: calc(1.7*var(--ball-size));
     left: var(--ball-pos);
     z-index: 2;
     /* animations */
@@ -105,7 +105,7 @@ body {
     to { 
         background-color: rgb(53, 153, 153);
         height: calc(var(--ball-size)/2);        
-        bottom: 12%;
+        bottom: calc(10% + 5px);
     }
 }
 
@@ -118,7 +118,7 @@ body {
     opacity: 0.3;
     /* position */
     position: absolute;
-    bottom: 11.5%;
+    bottom: 10%;
     left: calc(var(--ball-pos) + calc(var(--ball-size)/3));
     z-index: 1;
     /* animations */
